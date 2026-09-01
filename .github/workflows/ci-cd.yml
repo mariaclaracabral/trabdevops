@@ -1,0 +1,40 @@
+name: Pipeline CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_requests:
+    branches: [ main ]
+
+jobs:
+  continuous-integration:
+    name: Continuous Integration (CI)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout do Repositório
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Instalar Dependências
+      run: npm install
+
+    - name: Executar Testes Automatizados
+      run: npm test
+
+  continuous-deployment:
+    name: Continuous Deployment (CD)
+    needs: continuous-integration
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Simulação de Build e Deploy de Produção
+        run: |
+          echo "Build de produção concluído com sucesso!"
+          echo "Simulação de Deploy contínuo finalizada."
