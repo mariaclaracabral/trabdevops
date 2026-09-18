@@ -19,4 +19,4 @@ function ehPar(numero) {
     return numero % 2 === 0;
 }
 
-module.exports = { somar, substituir, multiplicar, dividir, ehPar};
+module.exports = { somar, subtrair, multiplicar, dividir, ehPar};
