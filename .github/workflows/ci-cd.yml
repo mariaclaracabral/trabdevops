@@ -4,29 +4,11 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    types: [opened, synchronize, resopened]
     branches: [ main ]
 
 jobs:
   continuous-integration:
-      name: Testes Unitarios (CI)
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout do Repositorio
-          uses: actions/checkout@v4
-
-        - name: Configurar Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: 22
-
-        - name: Instalar Dependencias
-          run: npm install
-
-        - name: Executar Testes Unitarios
-          run: node test.js
-  continuous-integration:
-    name: Continuous Integration (CI)
+    name: Testes Unitarios (CI)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do Repositorio
@@ -40,18 +22,17 @@ jobs:
       - name: Instalar Dependencias
         run: npm install
 
-      - name: Executar Testes Automatizados
+      - name: Executar Testes Unitarios
         run: node test.js
 
   continuous-deployment:
     name: Continuous Deployment (CD)
     needs: continuous-integration
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     steps:
       - name: Checkout do Repositorio
         uses: actions/checkout@v4
 
-      - name: Simulacao de Deploy
-        run: |
-          echo "Build de producao gerado com sucesso!"
-          echo "Continuous Deployment concluido."
+      - name: Simulação de Deploy
+        run: echo "CI e CD executados com sucesso!"
